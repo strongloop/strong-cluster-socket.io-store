@@ -20,12 +20,17 @@
     "name": "Miroslav Bajtos",
     "email": "miroslav@strongloop.com"
   },
-  "dependencies": {},
+  "dependencies": {
+    "sl-mq": "0.0.3",
+    "strong-store-cluster": "git+ssh://git@github.com:strongloop/strong-store-cluster.git"
+  },
   "devDependencies": {
     "mocha": "~1.9.0",
     "jshint": "~2.0.1",
     "blanket": "~1.1.4",
-    "chai": "~1.7.2"
+    "chai": "~1.7.2",
+    "socket.io": "~0.9.16",
+    "socket.io-client": "~0.9.16"
   },
   "engines": {
     "node": ">=0.10.0"

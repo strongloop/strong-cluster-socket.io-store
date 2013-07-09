@@ -1,4 +1,19 @@
-strong-cluster-store
-====================
+strong-cluster-socket.io-store
+==============================
 
-A simple key/value store for native cluster
+strong-cluster-socket.io-store provides an implementation of socket.io store
+using node's native cluster messaging.
+
+# Usage
+
+```javascript
+var io = require('socket.io');
+var Store = require('strong-cluster-socket.io-store')(io);
+
+// master
+store.SetupMaster();
+
+// worker
+var io = require('socket.io');
+io.listen(port, { store: new Store() });
+```
