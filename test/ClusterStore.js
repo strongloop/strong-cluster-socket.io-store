@@ -4,7 +4,7 @@ var ioServer = require('socket.io');
 var ioClient = require('socket.io-client');
 var Store = require('..')(ioServer);
 
-var SERVER_URL = 'http://localhost:8880';
+var serverUrl;
 
 if (cluster.isWorker) {
   startSocketIoServer();
@@ -76,7 +76,7 @@ describe('clustered socket.io server', function() {
 
   function createClient() {
     client = ioClient.connect(
-      SERVER_URL,
+      serverUrl,
       {
         reconnect: false,
         'force new connection': true
@@ -90,17 +90,26 @@ describe('clustered socket.io server', function() {
 });
 
 var WORKER_COUNT = 2;
-var workers;
+
+function getNumberOfWorkers() {
+  return Object.keys(cluster.workers).length;
+}
 
 function setupWorkers(done) {
-  cluster.setupMaster();
-  cluster.settings.exec = __filename;
+  if (getNumberOfWorkers() > 0) {
+    var msg = 'Cannot setup workers: there are already other workers running.';
+    return done(new Error(msg));
+  }
+
+  cluster.setupMaster({ exec: __filename });
   Store.setupMaster();
 
-  cluster.on('listening', function(w) {
-    workers = workers || [];
-    workers.push(w);
-    if (workers.length == WORKER_COUNT) {
+  var workersListening = 0;
+  cluster.on('listening', function(w, addr) {
+    if (!serverUrl) serverUrl = 'http://localhost:' + addr.port;
+
+    workersListening++;
+    if (workersListening == WORKER_COUNT) {
       done();
     }
   });
@@ -111,17 +120,13 @@ function setupWorkers(done) {
 }
 
 function stopWorkers(done) {
-  workers.forEach(function(w) { w.kill(); });
-  done();
+  cluster.disconnect(done);
 }
 
 function startSocketIoServer() {
-  var server = ioServer.listen(
-    Number(require('url').parse(SERVER_URL).port),
-    {
-      store: new Store()
-    }
-  );
+  var PORT = 0; // Let the OS pick any available port
+  var options = { store: new Store() };
+  var server = ioServer.listen(PORT, options);
 
   server.on('connection', function(socket) {
     socket.on('save', function(data) {

@@ -11,7 +11,7 @@ var io = require('socket.io');
 var Store = require('strong-cluster-socket.io-store')(io);
 
 // master
-store.SetupMaster();
+store.setupMaster();
 
 // worker
 var io = require('socket.io');
