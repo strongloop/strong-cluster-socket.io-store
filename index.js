@@ -1,2 +1,2 @@
 
-module.exports = require('./lib/ClusterStore.js');
+module.exports = require('./lib/cluster-store.js');
