@@ -11,26 +11,28 @@ if (cluster.isWorker) {
   return;
 }
 
-describe('clustered socket.io server', function() {
+describe('clustered socket.io', function() {
   before(setupWorkers);
   after(stopWorkers);
 
-  var client;
-  beforeEach(createClient);
-  afterEach(closeClient);
-
-  it('shares hand-shaken connections', function(done) {
-    client.on('error', function(err) { done(err); });
-    client.on('connect', function() { client.disconnect(); done(); });
+  describe('server', function() {
+    it('shares hand-shaken connections', function(done) {
+      var client = ioClient.connect(serverUrl, { reconnect: false });
+      client.on('error', function(err) { done(err); });
+      client.on('connect', function() { client.disconnect(); done(); });
+    });
   });
 
   // NOTE(bajtos): following tests do not verify that data is actually shared
   // between the workers, because I was not able to force socket.io client
   // to reconnect using the same client id.
+  describe('per-client store', function() {
+    var client;
+    beforeEach(createClient);
+    afterEach(closeClient);
 
-  it('shares user data', function(done) {
-    var PAYLOAD = 'a-string-data';
-    client.on('connect', function() {
+    it('shares user data', function(done) {
+      var PAYLOAD = 'a-string-data';
       client.emit('save', PAYLOAD);
       client.on('saved', function() {
         client.emit('load');
@@ -41,10 +43,8 @@ describe('clustered socket.io server', function() {
         done();
       });
     });
-  });
 
-  it('checks for existence of a shared entry', function(done) {
-    client.on('connect', function() {
+    it('checks for existence of a shared entry', function(done) {
       client.emit('save', 'a-value');
       client.on('saved', function() {
         client.emit('check');
@@ -55,10 +55,8 @@ describe('clustered socket.io server', function() {
         done();
       });
     });
-  });
 
-  it('deletes a shared entry', function(done) {
-    client.on('connect', function() {
+    it('deletes a shared entry', function(done) {
       client.emit('save', 'a-value');
       client.on('saved', function() {
         client.emit('delete');
@@ -72,21 +70,23 @@ describe('clustered socket.io server', function() {
         done();
       });
     });
+
+    function createClient(done) {
+      client = ioClient.connect(
+        serverUrl,
+        {
+          reconnect: false,
+          'force new connection': true
+        }
+      );
+      client.on('error', function(err) { done(err); });
+      client.on('connect', function() { done(); });
+    }
+
+    function closeClient() {
+      client.disconnect();
+    }
   });
-
-  function createClient() {
-    client = ioClient.connect(
-      serverUrl,
-      {
-        reconnect: false,
-        'force new connection': true
-      }
-    );
-  }
-
-  function closeClient() {
-    client.disconnect();
-  }
 });
 
 var WORKER_COUNT = 2;
