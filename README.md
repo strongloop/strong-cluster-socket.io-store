@@ -10,10 +10,17 @@ using node's native cluster messaging.
 var io = require('socket.io');
 var Store = require('strong-cluster-socket.io-store')(io);
 
-// master
-store.setupMaster();
+if (cluster.isWorker) {
+  var io = require('socket.io');
+  io.listen(port, { store: new Store() });
+}
 
-// worker
-var io = require('socket.io');
-io.listen(port, { store: new Store() });
+// In case you have a standalone master file,
+// you have to require() this module in order to setup
+// message-queue and shared-state servers.
+// Optionally you can also add a call to setup() function,
+// which serves as a documentation for require().
+require('strong-cluster-socket.io-store')(require('socket.io')).setup();
 ```
+
+TODO(bajtos): Improve the sample, explain what's going on and why.

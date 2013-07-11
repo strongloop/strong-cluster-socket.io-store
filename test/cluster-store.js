@@ -102,7 +102,7 @@ function setupWorkers(done) {
   }
 
   cluster.setupMaster({ exec: __filename });
-  Store.setupMaster();
+  Store.setup();
 
   var workersListening = 0;
   cluster.on('listening', function(w, addr) {
