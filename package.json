@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "sl-mq": "0.0.3",
-    "strong-store-cluster": "git+ssh://git@github.com:strongloop/strong-store-cluster.git"
+    "strong-store-cluster": "~0.1.0"
   },
   "devDependencies": {
     "mocha": "~1.9.0",
