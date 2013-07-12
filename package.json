@@ -16,6 +16,11 @@
     "type": "git",
     "url": "https://github.com/strongloop/strong-cluster-socket.io-store.git"
   },
+  "keywords": [
+    "socket.io",
+    "cluster",
+    "store"
+  ],
   "author": {
     "name": "Miroslav Bajtos",
     "email": "miroslav@strongloop.com"
