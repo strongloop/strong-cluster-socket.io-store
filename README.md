@@ -1,26 +1,62 @@
-strong-cluster-socket.io-store
-==============================
+# Socket.io Store for Cluster
 
-strong-cluster-socket.io-store provides an implementation of socket.io store
-using node's native cluster messaging.
+[![Build Status](https://travis-ci.org/strongloop/strong-cluster-socket.io-store.png?branch=master)](https://travis-ci.org/strongloop/strong-cluster-socket.io-store)
+[![NPM version](https://badge.fury.io/js/strong-cluster-socket.io-store.png)](http://badge.fury.io/js/strong-cluster-socket.io-store)
 
-# Usage
+## Overview
+
+Strong-cluster-socket.io-store is an implementation of socket.io store
+using node's native cluster messaging. It provides an easy solution
+for running socket.io server in a node cluster.
+
+### Features
+
+- No dependencies on external services.
+- Module is shipped without socket.io, it will use *your* version of socket.io.
+- Covered by unit-tests.
+
+## Usage
+
+### Installation
+
+```Shell
+$ npm install strong-cluster-socket.io-store
+```
+
+### Configuration
+
 
 ```javascript
 var io = require('socket.io');
-var Store = require('strong-cluster-socket.io-store')(io);
+var ClusterStore = require('strong-cluster-socket.io-store')(io);
 
-if (cluster.isWorker) {
-  var io = require('socket.io');
-  io.listen(port, { store: new Store() });
+if (cluster.isMaster) {
+  // Setup your master and fork workers.
+} else {
+  // Start a socket.io server, configure it to use ClusterStore.
+  io.listen(port, { store: new ClusterStore() });
+  // etc.
 }
-
-// In case you have a standalone master file,
-// you have to require() this module in order to setup
-// message-queue and shared-state servers.
-// Optionally you can also add a call to setup() function,
-// which serves as a documentation for require().
-require('strong-cluster-socket.io-store')(require('socket.io')).setup();
 ```
 
-TODO(bajtos): Improve the sample, explain what's going on and why.
+### Setting up the master process
+
+The store requires that a shared-state server is running in the master process.
+The server is initialized automatically when you require() this module
+from the master. In the case that your master and workers have separate source
+files, you must explicitly require this module in your master source file.
+Optionally, you can call `setup()` to make it more obvious why you are loading
+a module that is not used anywhere else.
+
+```javascript
+// master.js
+
+var cluster = require('cluster');
+// etc.
+
+require('strong-cluster-socket.io-store').setup();
+
+// configure your cluster
+// fork the workers
+// etc.
+```

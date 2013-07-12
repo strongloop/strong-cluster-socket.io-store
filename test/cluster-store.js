@@ -2,14 +2,18 @@ var cluster = require('cluster');
 var expect = require('chai').expect;
 var ioServer = require('socket.io');
 var ioClient = require('socket.io-client');
-var Store = require('..')(ioServer);
+var ClusterStore = require('..')(ioServer);
 
 var serverUrl;
+
+// verify we can call setup without ioServer in master and workers
+require('..').setup();
 
 if (cluster.isWorker) {
   startSocketIoServer();
   return;
 }
+
 
 describe('clustered socket.io', function() {
   before(setupWorkers);
@@ -102,7 +106,7 @@ function setupWorkers(done) {
   }
 
   cluster.setupMaster({ exec: __filename });
-  Store.setup();
+  ClusterStore.setup();
 
   var workersListening = 0;
   cluster.on('listening', function(w, addr) {
@@ -125,7 +129,7 @@ function stopWorkers(done) {
 
 function startSocketIoServer() {
   var PORT = 0; // Let the OS pick any available port
-  var options = { store: new Store() };
+  var options = { store: new ClusterStore() };
   var server = ioServer.listen(PORT, options);
 
   server.on('connection', function(socket) {
