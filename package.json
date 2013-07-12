@@ -26,7 +26,7 @@
     "email": "miroslav@strongloop.com"
   },
   "dependencies": {
-    "sl-mq": "0.0.3",
+    "strong-mq": "~0.0.3",
     "strong-store-cluster": "~0.1.0"
   },
   "devDependencies": {
