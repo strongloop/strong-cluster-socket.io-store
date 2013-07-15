@@ -25,7 +25,7 @@
     "name": "Miroslav Bajtos",
     "email": "miroslav@strongloop.com"
   },
-  "dependencies": {
+  "peerDependencies": {
     "strong-mq": "~0.0.3",
     "strong-store-cluster": "~0.1.0"
   },
@@ -35,7 +35,9 @@
     "blanket": "~1.1.4",
     "chai": "~1.7.2",
     "socket.io": "~0.9.16",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "strong-mq": "latest",
+    "strong-store-cluster": "latest"
   },
   "engines": {
     "node": ">=0.10.0"
