@@ -1,6 +1,6 @@
 {
   "name": "strong-cluster-socket.io-store",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Implementation of socket.io store using node's native cluster messaging",
   "license": "MIT",
   "main": "index.js",
