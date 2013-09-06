@@ -2,6 +2,8 @@ var cluster = require('cluster');
 var expect = require('chai').expect;
 var ioServer = require('socket.io');
 var ioClient = require('socket.io-client');
+var debug = require('debug')('test');
+
 var ClusterStore = require('..')(ioServer);
 
 var serverUrl;
@@ -76,6 +78,7 @@ describe('clustered socket.io', function() {
     });
 
     function createClient(done) {
+      debug('creating a new socket.io client');
       client = ioClient.connect(
         serverUrl,
         {
@@ -83,11 +86,23 @@ describe('clustered socket.io', function() {
           'force new connection': true
         }
       );
-      client.on('error', function(err) { done(err); });
-      client.on('connect', function() { done(); });
+
+      client.on('error', function(err) {
+        debug('client error', err);
+        done(err);
+      });
+
+      client.on('connect', function() {
+        debug('client connected');
+        done();
+      });
     }
 
-    function closeClient() {
+    function closeClient(done) {
+      client.once('disconnect', function() {
+        debug('client disconnected');
+        done();
+      });
       client.disconnect();
     }
   });
