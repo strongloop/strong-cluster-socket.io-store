@@ -15,6 +15,16 @@ for running socket.io server in a node cluster.
 - Module is shipped without socket.io, it will use *your* version of socket.io.
 - Covered by unit-tests.
 
+### WARNING
+
+Socket.io's implementation has a race condition that allows the client
+to send the websocket request to another worker before that worker
+has processed the notification about a successful handshake. See 
+[socket.io#952](https://github.com/LearnBoost/socket.io/issues/952).
+
+You have to enable session affinity (sticky sessions) in your load-balancer
+to get your socket.io server working in the cluster.
+
 ## Usage
 
 ### Installation
