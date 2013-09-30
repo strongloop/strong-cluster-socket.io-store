@@ -29,7 +29,7 @@ to get your socket.io server working in the cluster.
 
 ### Installation
 
-```Shell
+```sh
 $ npm install strong-cluster-socket.io-store
 ```
 
