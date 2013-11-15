@@ -5,10 +5,6 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "blanket": {
-      "pattern": "//^((?!(node_modules|test)).)*$/"
-    },
-    "coverage": "./node_modules/.bin/mocha -r blanket -R html-cov > coverage_strong-cluster-socket.io-store.html",
     "test": "mocha --reporter spec",
     "lint": "./node_modules/.bin/jshint *.js test lib"
   },
@@ -35,7 +31,6 @@
   "devDependencies": {
     "mocha": "~1.9.0",
     "jshint": "~2.0.1",
-    "blanket": "latest",
     "chai": "~1.7.2",
     "socket.io": "~0.9.16",
     "socket.io-client": "~0.9.16",
