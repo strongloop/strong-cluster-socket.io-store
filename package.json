@@ -2,7 +2,10 @@
   "name": "strong-cluster-socket.io-store",
   "version": "0.1.4",
   "description": "Implementation of socket.io store using node's native cluster messaging",
-  "license": "MIT",
+  "license": {
+    "name": "Dual MIT/StrongLoop",
+    "url": "https://github.com/strongloop/strong-cluster-socket.io-store/blob/master/LICENSE"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha --reporter spec",
