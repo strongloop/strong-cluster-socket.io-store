@@ -15,5 +15,5 @@ for running socket.io server in a node cluster.
 
 ### Documentation
 
-Please see the [official StrongLoop documentation](http://docs.strongloop.com/display/DOC/Socket+IO+Store+for+Clusters).
+Please see the [official StrongLoop documentation](http://docs.strongloop.com/display/SOPS/Socket+IO+store+for+clusters).
 
