@@ -14,7 +14,7 @@ Contributing to `strong-cluster-socket.io-store` is easy. In a few simple steps:
   * Adhere to code style outlined in the [Google C++ Style Guide][] and
     [Google Javascript Style Guide][].
 
-  * Sign the [Contributor License Agreement](https://cla.strongloop.com/strongloop/strong-cluster-socket.io-store)
+  * Sign the [Contributor License Agreement](https://cla.strongloop.com/agreements/strongloop/strong-cluster-socket.io-store)
 
   * Submit a pull request through Github.
 
