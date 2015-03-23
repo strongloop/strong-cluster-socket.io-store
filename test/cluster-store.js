@@ -19,7 +19,6 @@ if (cluster.isWorker) {
 
 describe('clustered socket.io', function() {
   before(setupWorkers);
-  after(stopWorkers);
 
   describe('server', function() {
     // NOTE(bajtos): There is a bug in socket.io implementation (#952)
@@ -141,10 +140,6 @@ function setupWorkers(done) {
   for (var i = 0; i < WORKER_COUNT; i++) {
     cluster.fork();
   }
-}
-
-function stopWorkers(done) {
-  cluster.disconnect(done);
 }
 
 function startSocketIoServer() {
