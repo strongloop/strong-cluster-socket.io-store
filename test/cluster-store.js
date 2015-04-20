@@ -2,7 +2,7 @@ var cluster = require('cluster');
 var expect = require('chai').expect;
 var ioServer = require('socket.io');
 var ioClient = require('socket.io-client');
-var debug = require('debug')('strong-cluster-socket.io-store:test');
+var debug = require('debug')('test');
 
 var ClusterStore = require('..')(ioServer);
 
