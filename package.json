@@ -1,6 +1,6 @@
 {
   "name": "strong-cluster-socket.io-store",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Implementation of socket.io store using node's native cluster messaging",
   "license": {
     "name": "Dual Artistic/StrongLoop",
